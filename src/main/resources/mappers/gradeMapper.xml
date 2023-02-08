@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.GradeDAO">
+
+    <resultMap id="gradeMap" type="com.pojo.Grade">
+        <result column="num" property="student" ></result>
+        <result column="cid" property="course" ></result>
+        <result column="grade" property="grade" ></result>
+    </resultMap>
+        <insert id="insert">
+        insert into grades(num,cid,grade)
+        values (#{student},#{course},#{grade})
+    </insert>
+    <update id="updateGrade">
+        update grades set grade = #{grade} where num=#{num} and cid=#{cid};
+    </update>
+    <delete id="delete">
+        delete from grades where cid = #{cid} and num =#{num};
+    </delete>
+<!--    <select id="selectByNum" resultMap="gradeMap">-->
+<!--        select s_num,c_id from grades where s_num = #{num}-->
+<!--    </select>-->
+    <select id="allGradeList" resultMap="gradeMap">
+        select num,cid,grade from grades
+    </select>
+    <select id="allGradeListByCourse" resultMap="gradeMap">
+        select num,cid,grade from grades where cid = #{course}
+    </select>
+    <select id="GradeByNum" resultMap="gradeMap">
+        select cid,grade from grades where num = #{num}
+    </select>
+    <select id="GradeByCid" resultMap="gradeMap">
+        select cid from grades where num = #{cid}
+    </select>
+    <select id="CidByNum" resultType="string">
+        select cid from grades where num = #{num}
+    </select>
+</mapper>

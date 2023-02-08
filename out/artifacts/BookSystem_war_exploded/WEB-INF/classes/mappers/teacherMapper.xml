@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.TeacherDAO">
+    <resultMap id="teacherMap" type="com.pojo.Teacher">
+        <result column="t_num" property="tNum"></result>
+        <result column="t_pwd" property="tPwd"></result>
+        <result column="t_name" property="tName"></result>
+    </resultMap>
+    <insert id="insert">
+        insert into teachers(t_num,t_pwd,t_name)
+        values (#{tNum},#{tPwd},#{tName})
+    </insert>
+    <select id="selectAll" resultMap="teacherMap">
+        select t_num,t_pwd,t_name from teachers;
+    </select>
+    <select id="login" resultType="java.lang.Integer">
+        select * from teachers
+        where t_num = #{num} and t_pwd = #{pwd};
+    </select>
+</mapper>

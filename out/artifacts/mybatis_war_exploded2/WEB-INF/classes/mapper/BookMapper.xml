@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.BookMapper">
+
+    <!--查询-->
+<!--查询所有-->
+    <select id="selectAll" resultType="entity.Book">
+        select * from books
+    </select>
+<!--引用sql片段
+    <sql id="book_col">select id,price,isbn</sql>
+
+    <select id="selectAll" resultType="entity.Book">
+         select <include refid="book_col"></include> from books
+    </select>
+    -->
+
+<!--映射
+    <resultMap id="bookResultMap" type="Book">
+        <result column="book_name" property="name"></result>
+        <result column="book_id" property="id"></result>
+    </resultMap>
+    -->
+<!--按照id查询-->
+    <select id="selectById" resultType="entity.Book">
+        select * from books where id = #{id}
+    </select>
+<!--多条件-动态条件查询-->
+    <select id="selectByCondition" resultType="entity.Book">
+        select * from books
+        <where>
+            <if test="id != null">
+                id > ${id}
+            </if>
+
+            <if test="price != null">
+                and price > #{price}
+            </if>
+        </where>
+    </select>
+<!--单条件-动态条件查询-->
+    <select id="selectByConditionSimple" resultType="entity.Book">
+        select * from books where
+    <choose>
+        <when test="id != null">
+            id > ${id}
+        </when>
+        <when test="price != null">
+            price > #{price}
+        </when>
+        <otherwise>
+            1 = 1
+        </otherwise>
+    </choose>
+    </select>
+
+
+
+    <!--添加-->
+    <insert id="add">
+        insert into books (id,name,author,published,price,time,isbn)
+        values (#{id},#{name},#{author},#{published},#{price},#{time},#{isbn});
+    </insert>
+
+    <!--修改-->
+    <update id="update">
+        update books set
+                         name=#{name},
+                         author=#{author},
+                         published=#{published},
+                         price=#{price},
+                         time=#{time},
+                         isbn=#{isbn}
+        where id=#{id};
+    </update>
+    <!--动态sql修改-->
+    <update id="d_update">
+        update books
+<set>
+    <if test="name!=null and name != ''">
+        name=#{name},
+    </if>
+    <if test="author!=null and author != ''">
+        author=#{author},
+    </if>
+    <if test="published!=null and published != ''">
+        published=#{published},
+    </if>
+    <if test="price!=null and price != 0">
+        price=#{price},
+    </if>
+    <if test="time!=null and time != ''">
+        time=#{time},
+    </if>
+    <if test="isbn!=null and isbn != ''">
+        isbn=#{isbn}
+    </if>
+            where id = #{id};
+</set>
+    </update>
+
+                        <!--删除-->
+    <delete id="deleteById">
+        delete from books where id = #{id};
+    </delete>
+<!--批量删除-->
+    <delete id="deleteByIds">
+        delete from books where id
+        in (
+            <foreach collection="ids" item="id" separator=",">
+                #{id}
+            </foreach>
+                                    );
+    </delete>
+
+
+
+
+
+
+
+<!--以下sql语句为Book图书管理系统所需要的-->
+    <!--登陆验证-->
+
+    <select id="check" resultType="entity.User">
+        select *from users
+        <where>
+            <if test="username != null and username !=''">
+                username = #{username}
+            </if>
+
+            <if test="pwd != null and pwd !=''">
+                and pwd = #{pwd}
+            </if>
+        </where>
+    </select>
+
+    <!--注册用户-->
+
+
+
+
+
+</mapper>

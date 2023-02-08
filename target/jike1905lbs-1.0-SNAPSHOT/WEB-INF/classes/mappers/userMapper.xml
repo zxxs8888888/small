@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.UserDAO">
+    <resultMap id="userMap" type="com.pojo.User">
+        <result column="num" property="num"></result>
+        <result column="pwd" property="pwd"></result>
+        <result column="name" property="name"></result>
+        <result column="type" property="type"></result>
+    </resultMap>
+    <insert id="Register" >
+    insert into users(num,pwd,name,type ) values (#{num},#{pwd},#{name},#{type})
+        </insert>
+        <!--    <insert id="insert">-->
+<!--        insert into users(num,pwd,name)-->
+<!--        values (#{Num},#{Pwd},#{Name})-->
+<!--    </insert>-->
+<!--    <select id="selectAll" resultMap="userMap">-->
+<!--        select num,pwd,name from users;-->
+<!--    </select>-->
+    <select id="login" resultType="java.lang.String">
+        select type from users
+        where num = #{num} and pwd = #{pwd};
+    </select>
+    <select id="AllStudentList" resultMap="userMap">
+        select num,pwd,name,type from users where type = '1'
+    </select>
+    <select id="AllUsers" resultMap="userMap">
+        select num,pwd,name,type from users;
+    </select>
+</mapper>
